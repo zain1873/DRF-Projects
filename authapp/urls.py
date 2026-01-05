@@ -1,16 +1,11 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
-from .views import login_view, register_view, dashboard_view
-from django.contrib.auth import views as auth_views
-
+from . import views
 
 urlpatterns = [
-    path("login-page/", login_view, name="login"),
-    path("register-page/", register_view, name="register"),
-    path("dashboard/", dashboard_view, name="dashboard"),
-    path('password-reset/', auth_views.PasswordResetView.as_view(
-        template_name='password_reset_form.html'
-    ), name='password_reset')
-
-
+    path('forget-password/', views.forget_password_page, name='forget_password_page'),
+    path('verify-otp/', views.verify_otp_page, name='verify_otp_page'), 
+    path('reset-password/', views.reset_password_page, name='reset_password_page'),
+    path('login/', views.login_view, name='login'),
+    path('register/', views.register_view, name='register'),
+    path('dashboard/', views.dashboard_view, name='dashboard'),
 ]

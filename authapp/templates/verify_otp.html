@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Verify OTP</title>
     <style>
         /* Basic Reset */
         * {
@@ -21,7 +21,7 @@
             align-items: center;
         }
 
-        .login-container {
+        .otp-container {
             background: white;
             padding: 40px 30px;
             border-radius: 10px;
@@ -30,13 +30,12 @@
             text-align: center;
         }
 
-        .login-container h2 {
+        .otp-container h2 {
             margin-bottom: 30px;
             color: #333;
         }
 
-        .login-container input[type="text"],
-        .login-container input[type="password"] {
+        .otp-container input[type="text"] {
             width: 100%;
             padding: 12px 15px;
             margin: 10px 0;
@@ -44,7 +43,7 @@
             border: 1px solid #ccc;
         }
 
-        .login-container button {
+        .otp-container button {
             width: 100%;
             padding: 12px;
             background: #6a11cb;
@@ -57,17 +56,24 @@
             transition: 0.3s;
         }
 
-        .login-container button:hover {
+        .otp-container button:hover {
             background: #2575fc;
         }
 
-        .login-container .error {
-            color: red;
-            margin-top: 10px;
+        .otp-container .message {
+            margin-top: 15px;
             font-size: 14px;
         }
 
-        .login-container a {
+        .otp-container .message.error {
+            color: red;
+        }
+
+        .otp-container .message.success {
+            color: green;
+        }
+
+        .otp-container a {
             display: block;
             margin-top: 15px;
             color: #6a11cb;
@@ -75,25 +81,33 @@
             font-size: 14px;
         }
 
-        .login-container a:hover {
+        .otp-container a:hover {
             color: #2575fc;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
+    <div class="otp-container">
+        <h2>Verify OTP</h2>
+
+        <!-- Display Django messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- OTP Form -->
         <form method="POST">
             {% csrf_token %}
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Login</button>
+            <input type="text" name="otp" placeholder="Enter OTP" required>
+            <button type="submit">Verify OTP</button>
         </form>
-        {% if error %}
-        <div class="error">{{ error }}</div>
-        {% endif %}
-        <a href="{% url 'register' %}">Don't have an account? Register</a>
-    <a href="{% url 'forget_password_page' %}">Forgot Password?</a>
+
+        <a href="{% url 'forget_password_page' %}">Resend OTP</a>
+        <a href="{% url 'login' %}">Back to Login</a>
     </div>
 </body>
 </html>
